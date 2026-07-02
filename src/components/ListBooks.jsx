@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
-import books from '../data/fantasy.json';
+import React, { useState } from "react";
+import books from "../data/fantasy.json";
 
-function ListBooks() {
-  // Stato per salvare il testo digitato dall'utente nella barra di ricerca
-  const [searchTerm, setSearchTerm] = useState('');
+// 1. aggiungo la selezione del libro col suo asin corrispondente
+function ListBooks({ onBookSelect, selectedAsin }) {
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Filtriamo i libri in tempo reale: tiene solo quelli il cui titolo include il testo cercato
   const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+    book.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
     <div className="container my-4">
-      {/* Campo di input per la ricerca */}
       <div className="mb-4">
         <input
           type="text"
@@ -23,17 +21,21 @@ function ListBooks() {
         />
       </div>
 
-      {/* Griglia dei libri */}
       <div className="row g-4">
         {filteredBooks.map((book) => (
-          // col-12 (1 colonna su mobile), col-md-4 (3 colonne a partire da 768px)
           <div className="col-12 col-md-4" key={book.asin}>
-            <div className="card h-100 shadow-sm">
-              <img 
-                src={book.img} 
-                className="card-img-top" 
-                alt={book.title} 
-                style={{ height: '300px', objectFit: 'cover' }} 
+            {/* 2. quando clicco la card passagli l'asin */}
+            {/* dagli anche un boostrap rosso*/}
+            <div
+              className={`card h-100 shadow-sm ${selectedAsin === book.asin ? "border border-danger border-2" : ""}`}
+              onClick={() => onBookSelect(book.asin)}
+              style={{ cursor: "pointer" }}
+            >
+              <img
+                src={book.img}
+                className="card-img-top"
+                alt={book.title}
+                style={{ height: "300px", objectFit: "cover" }}
               />
               <div className="card-body d-flex flex-column justify-content-between">
                 <h5 className="card-title text-truncate">{book.title}</h5>
