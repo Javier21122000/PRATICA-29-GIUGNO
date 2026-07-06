@@ -10,9 +10,17 @@ function AddComment({ asin, refetch }) {
   const [rating, setRating] = useState("1");
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Impedisce alla pagina di ricaricarsi
+    e.preventDefault(); // pagina non ricaricarti qui
 
-    // oggetto dall api
+    // se non ce l'asin NON far partire il POST
+    if (!asin) {
+      alert(
+        "Nessun libro selezionato! Scegli un libro dal catalogo prima di inviare una recensione.",
+      );
+      return; // interrompi e dai alert
+    }
+
+    // cosa chiedo con la api
     const newComment = {
       comment: commentText,
       rate: rating,
@@ -26,13 +34,13 @@ function AddComment({ asin, refetch }) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
-        body: JSON.stringify(newComment), // json stringify per trasformare in stringa
+        body: JSON.stringify(newComment), // transformalo in JSON
       });
 
       if (response.ok) {
-        setCommentText(""); // svuota il campo di testo dopo l'invio
+        setCommentText(""); // dopo l invio ridammi input vuoto
         setRating("1");
-        refetch(); // aggiorna la lista visualizzata a schermo
+        refetch(); // rifetcha immediatamente cosi ho la GET aggiornata
       }
     } catch (error) {
       console.error("Errore nell'invio del commento", error);

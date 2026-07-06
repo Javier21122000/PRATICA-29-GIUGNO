@@ -6,7 +6,7 @@ import ListBooks from "./components/ListBooks";
 import CommentArea from "./components/CommentArea";
 
 function App() {
-  // Stato per salvare l'ASIN del libro selezionato
+  // stato iniziale null perhce non ho nessun libro selezionato
   const [selectedBookAsin, setSelectedBookAsin] = useState(null);
 
   return (
@@ -17,25 +17,19 @@ function App() {
         <div className="row">
           {/* colonna libri */}
           <div className="col-md-8">
-            {/* passo la funzione per asin */}
             <ListBooks
               onBookSelect={setSelectedBookAsin}
               selectedAsin={selectedBookAsin}
             />
           </div>
-          {/* Colonna dei commenti bloccata in alto durante lo scroll */}
+          
+          {/* rimani bloccata quando vado in scroll */}
           <div
             className="col-md-4"
             style={{ position: "sticky", top: "20px", height: "fit-content" }}
           >
-            {/* Mostriamo l'area commenti solo se è stato selezionato un libro */}
-            {selectedBookAsin ? (
-              <CommentArea asin={selectedBookAsin} />
-            ) : (
-              <div className="p-3 text-muted text-center border rounded bg-light">
-                Vedrai i commenti apparire qui cliccando su una delle Cards📚
-              </div>
-            )}
+            {/* ora non è se e quando ma SEMPRE li visibile*/}
+            <CommentArea asin={selectedBookAsin} />
           </div>
         </div>
       </div>
