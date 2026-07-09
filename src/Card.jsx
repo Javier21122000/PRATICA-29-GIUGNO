@@ -1,9 +1,11 @@
-// prima funzione react
+// src/components/Card.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-// le props che gli do sono testo, img e alt dell img
-//gli do anche unso stile moderno al bottone con button style etc
-function Card({ buttonText, imgSrc, imgAlt }) {
+// asin alle props
+function Card({ buttonText, imgSrc, imgAlt, asin }) {
+  const navigate = useNavigate(); // usa react router per cambiare pagina
+
   return (
     <div
       style={{
@@ -12,24 +14,27 @@ function Card({ buttonText, imgSrc, imgAlt }) {
         borderRadius: "10px",
         textAlign: "center",
         margin: "10px",
+        backgroundColor: "white",
       }}
     >
       <img
         src={imgSrc}
         alt={imgAlt}
-        style={{ width: "100px", height: "auto" }}
+        style={{ width: "100px", height: "auto", marginBottom: "15px" }}
       />
       <br />
       <button
+        // onclick portami alla pagina dei dettagli
+        onClick={() => navigate(`/details/${asin}`)}
         style={{
-          backgroundColor: "#007BFF", // Colore di sfondo blu
-          color: "white", // Testo bianco
-          border: "none", // Rimuove il bordo brutto di default
-          padding: "10px 20px", // Spazio interno (sopra/sotto e destra/sinistra)
-          borderRadius: "5px", // Angoli arrotondati
-          cursor: "pointer", // Cambia il cursore in una manina quando ci passi sopra
-          fontSize: "16px", // Testo un po' più grande
-          fontWeight: "bold", // Testo in grassetto
+          backgroundColor: "#007BFF",
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "5px",
+          cursor: "pointer",
+          fontSize: "16px",
+          fontWeight: "bold",
         }}
       >
         {buttonText}

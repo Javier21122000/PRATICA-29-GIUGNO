@@ -1,38 +1,34 @@
 // src/App.jsx
-import React, { useState } from "react";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 import HeaderNav from "./components/HeaderNav";
-import Jumbotron from "./components/Jumbotron";
-import ListBooks from "./components/ListBooks";
-import CommentArea from "./components/CommentArea";
+import Home from "./pages/Home";
+import BookDetails from "./pages/BookDetails";
 
 function App() {
-  // stato iniziale null perhce non ho nessun libro selezionato
-  const [selectedBookAsin, setSelectedBookAsin] = useState(null);
-
   return (
     <div>
+      {/* navbare sempre fissa in tutti i ruoting*/}
       <HeaderNav />
-      <Jumbotron />
-      <div className="container-fluid">
-        <div className="row">
-          {/* colonna libri */}
-          <div className="col-md-8">
-            <ListBooks
-              onBookSelect={setSelectedBookAsin}
-              selectedAsin={selectedBookAsin}
-            />
-          </div>
-          
-          {/* rimani bloccata quando vado in scroll */}
-          <div
-            className="col-md-4"
-            style={{ position: "sticky", top: "20px", height: "fit-content" }}
-          >
-            {/* ora non è se e quando ma SEMPRE li visibile*/}
-            <CommentArea asin={selectedBookAsin} />
-          </div>
-        </div>
-      </div>
+
+      {/* cambiami i component quando cambia l url */}
+      <Routes>
+        {/* quando url è / allora dammi la home */}
+        <Route path="/" element={<Home />} />
+
+        {/* quando url è details allora dammi i detaggli*/}
+        <Route path="/details/:asin" element={<BookDetails />} />
+
+        {/* url sbagliato dai il 404 */}
+        <Route
+          path="*"
+          element={
+            <div className="text-center mt-5">
+              <h3>404 - Pagina Non Trovata 🧭</h3>
+            </div>
+          }
+        />
+      </Routes>
     </div>
   );
 }

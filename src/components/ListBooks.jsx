@@ -1,9 +1,11 @@
+// src/components/ListBooks.jsx nuova listi libri tolte le props e aggiunto il routing
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // navigatore routing
 import books from "../data/fantasy.json";
 
-// 1. aggiungo la selezione del libro col suo asin corrispondente
-function ListBooks({ onBookSelect, selectedAsin }) {
+function ListBooks() {
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate(); // hook per url
 
   const filteredBooks = books.filter((book) =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -24,11 +26,10 @@ function ListBooks({ onBookSelect, selectedAsin }) {
       <div className="row g-4">
         {filteredBooks.map((book) => (
           <div className="col-12 col-md-4" key={book.asin}>
-            {/* 2. quando clicco la card passagli l'asin */}
-            {/* dagli anche un boostrap rosso*/}
             <div
-              className={`card h-100 shadow-sm ${selectedAsin === book.asin ? "border border-danger border-2" : ""}`}
-              onClick={() => onBookSelect(book.asin)}
+              className="card h-100 shadow-sm"
+              // al click sulla card dammi url dei dettagli
+              onClick={() => navigate(`/details/${book.asin}`)}
               style={{ cursor: "pointer" }}
             >
               <img

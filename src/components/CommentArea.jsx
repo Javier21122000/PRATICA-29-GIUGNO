@@ -1,4 +1,4 @@
-// src/components/CommentArea.jsx
+// src/components/CommentArea.jsx commenti aggiornati al routing
 import React, { useState, useEffect } from "react";
 import CommentsList from "./CommentsList";
 import AddComment from "./AddComment";
@@ -11,7 +11,7 @@ function CommentArea({ asin }) {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // get e dammi ogni volta che chiamo api i veri commenti realigia scritti
+  // fai una fetch col GET
   const fetchComments = async () => {
     if (!asin) return;
     setIsLoading(true);
@@ -32,31 +32,31 @@ function CommentArea({ asin }) {
     }
   };
 
-  // utilizzo useffect che è praticamente uguael a didupdate
+  // useeffect per vedere quando cambia il mio asin nell url
   useEffect(() => {
     if (asin) {
       fetchComments();
     } else {
-      setComments([]); // se non ho asin svuota i commenti di prima
+      setComments([]);
     }
   }, [asin]);
 
   return (
-    <div className="p-3 border rounded bg-light">
-      <h5>Recensioni Libro</h5>
+    <div className="p-3 border rounded bg-light shadow-sm">
+      <h5 className="mb-3">Recensioni Libro</h5>
 
-      {/* gestione lista delle recensioni */}
+      {/* gestione degli stati asincroni */}
       {isLoading ? (
-        <p>Caricamento...</p>
-      ) : asin ? (
+        <p className="text-center text-muted">Caricamento in corso...</p>
+      ) : comments.length > 0 ? (
         <CommentsList comments={comments} refetch={fetchComments} />
       ) : (
-        <p className="text-muted text-center my-3">
-          Seleziona un libro per vedere le recensioni esistenti.
+        <p className="text-muted text-center my-3 small">
+          Ancora nessuna recensione per questo libro. Sii il primo! 📝
         </p>
       )}
 
-      {/* addcomment lo monto sempre in fondo*/}
+      {/* form col POST */}
       <AddComment asin={asin} refetch={fetchComments} />
     </div>
   );
